@@ -11,7 +11,6 @@
 
 #ifdef HAVE_SYMENGINE_MPFR
 #include <symengine/basic.h>
-#include <mpfr.h>
 
 namespace SymEngine {
 

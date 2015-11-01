@@ -1,6 +1,3 @@
-#include <algorithm>
-#include <limits>
-
 #include <symengine/printer.h>
 
 namespace SymEngine {
@@ -246,7 +243,7 @@ void StrPrinter::bvisit(const UnivariatePolynomial &x) {
         //given a term in univariate polynomial, if coefficient is zero, print nothing
         if (it->second == 0) {
             //except when it is the only term, say "0"
-            if (it->first == 0) 
+            if (it->first == 0)
                 s << "0";
             ++it;
         }
@@ -256,12 +253,12 @@ void StrPrinter::bvisit(const UnivariatePolynomial &x) {
             //in cases of -7, it is the only term, hence we print -7
             //in cases of x - 7, the '-' is considered earlier, hence print only 7
             if (it->first == 0) {
-                if (first) 
+                if (first)
                     s << it->second;
-                else 
+                else
                     s << abs(it->second);
             }
-            //if exponent is 1, print x instead of x**1 
+            //if exponent is 1, print x instead of x**1
             else if (it->first == 1) {
                 //in cases of -x, print -x
                 //in cases of x**2 - x, print x, the '-' is considered earlier
@@ -283,16 +280,16 @@ void StrPrinter::bvisit(const UnivariatePolynomial &x) {
                 if (it->second < 0) {
                     s << " - ";
                 } else {
-                    s << " + "; 
+                    s << " + ";
                 }
             }
         }
         //same logic is followed as above
         else {
             if (it->first == 0) {
-                if (first) 
+                if (first)
                     s << it->second;
-                else 
+                else
                     s << abs(it->second);
             } else if (it->first == 1) {
                 if (first && it->second < 0) {
@@ -307,7 +304,7 @@ void StrPrinter::bvisit(const UnivariatePolynomial &x) {
                 if (it->second < 0) {
                     s << " - ";
                 } else {
-                    s << " + "; 
+                    s << " + ";
                 }
             }
         }

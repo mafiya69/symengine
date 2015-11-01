@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 #include <symengine/basic.h>
 #include <symengine/symbol.h>
 #include <symengine/cwrapper.h>
