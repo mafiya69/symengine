@@ -150,7 +150,7 @@ void StrPrinter::bvisit(const Add &x) {
             t = parenthesizeLT(p.second, PrecedenceEnum::Mul) + "*" + parenthesizeLT(p.first, PrecedenceEnum::Mul);
         }
 
-        if (!first) {
+        if (not first) {
             if (t[0] == '-') {
                 o << " - " << t.substr(1);
             } else {
@@ -179,9 +179,9 @@ void StrPrinter::bvisit(const Mul &x) {
     }
 
     for (auto &p: dict) {
-        if ((is_a<Integer>(*p.second) &&
+        if ((is_a<Integer>(*p.second) and
              rcp_static_cast<const Integer>(p.second)->is_negative()) ||
-            (is_a<Rational>(*p.second) &&
+            (is_a<Rational>(*p.second) and
              rcp_static_cast<const Rational>(p.second)->is_negative())) {
             if(eq(*(p.second), *minus_one)) {
                 o2 << parenthesizeLT(p.first, PrecedenceEnum::Mul);
@@ -205,7 +205,7 @@ void StrPrinter::bvisit(const Mul &x) {
         }
     }
 
-    if (!num) {
+    if (not num) {
         o << "1*";
     }
 
@@ -227,9 +227,9 @@ void StrPrinter::bvisit(const Mul &x) {
 
 void StrPrinter::bvisit(const Pow &x) {
     std::ostringstream o;
-    o << parenthesizeLE(x.base_, PrecedenceEnum::Pow);
+    o << parenthesizeLE(x.get_base(), PrecedenceEnum::Pow);
     o << "**";
-    o << parenthesizeLE(x.exp_, PrecedenceEnum::Pow);
+    o << parenthesizeLE(x.get_exp(), PrecedenceEnum::Pow);
     str_ = o.str();
 }
 
@@ -262,13 +262,13 @@ void StrPrinter::bvisit(const UnivariatePolynomial &x) {
             else if (it->first == 1) {
                 //in cases of -x, print -x
                 //in cases of x**2 - x, print x, the '-' is considered earlier
-                if (first && it->second == -1) {
+                if (first and it->second == -1) {
                     s << "-" << x.var_->get_name();
                 } else {
                     s << x.var_->get_name();
                 }
             } else {
-                if (first && it->second == -1) {
+                if (first and it->second == -1) {
                     s << "-" << x.var_->get_name() << "**"  << it->first;
                 } else {
                     s << x.var_->get_name() << "**"  << it->first;
@@ -276,7 +276,7 @@ void StrPrinter::bvisit(const UnivariatePolynomial &x) {
             }
             //if next term is going to be 0, don't print +, so that x**3 + 0 + x becomes x**3 + x
             //also consider that sign of term here itself to avoid prints like x + -1
-            if ((++it != x.dict_.rend()) && (it->second != 0)) {
+            if ((++it != x.dict_.rend()) and (it->second != 0)) {
                 if (it->second < 0) {
                     s << " - ";
                 } else {
@@ -292,7 +292,7 @@ void StrPrinter::bvisit(const UnivariatePolynomial &x) {
                 else
                     s << abs(it->second);
             } else if (it->first == 1) {
-                if (first && it->second < 0) {
+                if (first and it->second < 0) {
                     s << it->second << "*" << x.var_->get_name();
                 } else {
                     s << abs(it->second) << "*" << x.var_->get_name();
@@ -300,7 +300,7 @@ void StrPrinter::bvisit(const UnivariatePolynomial &x) {
             } else {
                 s << abs(it->second) << "*" << x.var_->get_name() << "**"  << it->first;
             }
-            if ((++it != x.dict_.rend()) && (it->second != 0)) {
+            if ((++it != x.dict_.rend()) and (it->second != 0)) {
                 if (it->second < 0) {
                     s << " - ";
                 } else {
@@ -371,6 +371,10 @@ void StrPrinter::bvisit(const Subs &x) {
     }
     o << "Subs(" << this->apply(x.arg_) << ", (" << vars.str() << "), (" << point.str() << "))";
     str_ = o.str();
+}
+
+void StrPrinter::bvisit(const NumberWrapper &x) {
+    str_ = x.__str__();
 }
 
 std::string StrPrinter::parenthesizeLT(const RCP<const Basic> &x, PrecedenceEnum precedenceEnum) {
