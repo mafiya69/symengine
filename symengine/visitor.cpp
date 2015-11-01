@@ -1,5 +1,3 @@
-#include <cmath>
-
 #include <symengine/basic.h>
 #include <symengine/symbol.h>
 #include <symengine/add.h>
@@ -98,4 +96,3 @@ set_basic free_symbols(const Basic &b) {
 }
 
 } // SymEngine
-

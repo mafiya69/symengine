@@ -1,4 +1,3 @@
-#include <stdexcept>
 
 #include <symengine/add.h>
 #include <symengine/symbol.h>

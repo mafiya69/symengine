@@ -1,5 +1,3 @@
-#include <stdexcept>
-
 #include <symengine/monomials.h>
 
 namespace SymEngine {

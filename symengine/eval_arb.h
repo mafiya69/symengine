@@ -11,7 +11,6 @@
 
 #ifdef HAVE_SYMENGINE_ARB
 #include <symengine/basic.h>
-#include <arb.h>
 
 namespace SymEngine {
 

@@ -1,21 +1,7 @@
-#include <cmath>
-#include <valarray>
-#include <iterator>
-
 #include <symengine/ntheory.h>
 #include <symengine/rational.h>
 #include <symengine/mul.h>
-#ifdef HAVE_SYMENGINE_ECM
-#  include <ecm.h>
-#endif // HAVE_SYMENGINE_ECM
-#ifdef HAVE_SYMENGINE_PRIMESIEVE
-#  include <primesieve.hpp>
-#endif // HAVE_SYMENGINE_PRIMESIEVE
-#ifdef HAVE_SYMENGINE_ARB
-#  include "arb.h"
-#  include "bernoulli.h"
-#  include "rational.h"
-#endif // HAVE_SYMENGINE_ARB
+
 #include <symengine/dict.h>
 
 namespace SymEngine {
@@ -90,7 +76,7 @@ RCP<const Integer> quotient_f(const Integer &n, const Integer &d)
     return integer(q);
 }
 
-void quotient_mod(const Ptr<RCP<const Integer>> &q, const Ptr<RCP<const Integer>> &r, 
+void quotient_mod(const Ptr<RCP<const Integer>> &q, const Ptr<RCP<const Integer>> &r,
         const Integer &n, const Integer &d)
 {
     mpz_class _q, _r;
@@ -104,7 +90,7 @@ RCP<const Integer> fibonacci(unsigned long n)
     mpz_class f;
 
     mpz_fib_ui(f.get_mpz_t(), n);
-    
+
     return integer(f);
 }
 
@@ -130,7 +116,7 @@ RCP<const Integer> lucas(unsigned long n)
     mpz_class f;
 
     mpz_lucnum_ui(f.get_mpz_t(), n);
-    
+
     return integer(f);
 }
 
@@ -157,7 +143,7 @@ RCP<const Integer> binomial(const Integer &n, unsigned long k)
     mpz_class f;
 
     mpz_bin_ui(f.get_mpz_t(), n.as_mpz().get_mpz_t(), k);
-    
+
     return integer(f);
 }
 
@@ -167,7 +153,7 @@ RCP<const Integer> factorial(unsigned long n)
     mpz_class f;
 
     mpz_fac_ui(f.get_mpz_t(), n);
-    
+
     return integer(f);
 }
 
@@ -279,7 +265,7 @@ int factor_lehman_method(const Ptr<RCP<const Integer>> &f, const Integer &n)
 }
 
 // Factor using Pollard's p-1 method
-int _factor_pollard_pm1_method(mpz_class &rop, const mpz_class &n, 
+int _factor_pollard_pm1_method(mpz_class &rop, const mpz_class &n,
         const mpz_class &c, unsigned B)
 {
     if (n < 4 or B < 3)
@@ -308,7 +294,7 @@ int _factor_pollard_pm1_method(mpz_class &rop, const mpz_class &n,
         return 1;
 }
 
-int factor_pollard_pm1_method(const Ptr<RCP<const Integer>> &f, const Integer &n, 
+int factor_pollard_pm1_method(const Ptr<RCP<const Integer>> &f, const Integer &n,
         unsigned B, unsigned retries)
 {
     int ret_val = 0;
@@ -332,7 +318,7 @@ int factor_pollard_pm1_method(const Ptr<RCP<const Integer>> &f, const Integer &n
 }
 
 // Factor using Pollard's rho method
-int _factor_pollard_rho_method(mpz_class &rop, const mpz_class &n, 
+int _factor_pollard_rho_method(mpz_class &rop, const mpz_class &n,
         const mpz_class &a, const mpz_class &s, unsigned steps = 10000)
 {
     if (n < 5)
@@ -359,7 +345,7 @@ int _factor_pollard_rho_method(mpz_class &rop, const mpz_class &n,
     return 0;
 }
 
-int factor_pollard_rho_method(const Ptr<RCP<const Integer>> &f, 
+int factor_pollard_rho_method(const Ptr<RCP<const Integer>> &f,
         const Integer &n, unsigned retries)
 {
     int ret_val = 0;
@@ -459,10 +445,10 @@ void prime_factors(std::vector<RCP<const Integer>> &prime_list, const Integer &n
     unsigned limit = sqrtN.get_ui();
     Sieve::iterator pi(limit);
     unsigned p;
-    
+
     while ((p = pi.next_prime()) <= limit) {
         while (_n % p == 0) {
-            prime_list.push_back(integer(p)); 
+            prime_list.push_back(integer(p));
             _n = _n / p;
         }
         if (_n == 1) break;
@@ -537,7 +523,7 @@ void Sieve::_extend(unsigned limit)
         _extend(sqrt_limit);
         start = _primes.back() + 1;
     }
-    
+
     unsigned segment = _sieve_size;
     std::valarray<bool> is_prime(segment);
     for (; start <= limit; start += 2 * segment) {
@@ -553,7 +539,7 @@ void Sieve::_extend(unsigned limit)
             if (multiple > finish)
                 continue;
             std::slice sl = std::slice((multiple-start)/ 2, 1 + (finish - multiple) / (2 * n), n);
-            //starting from n*n, all the odd multiples of n are marked not prime. 
+            //starting from n*n, all the odd multiples of n are marked not prime.
             is_prime[sl] = false;
         }
         for (unsigned n = start + 1; n <= finish; n += 2) {
@@ -708,7 +694,7 @@ bool _prime_power(mpz_class &p, mpz_class &e, const mpz_class &n)
 
 // Computes a primitive root modulo p**e or 2*p**e where p is an odd prime.
 // References : Cohen H., A course in computational algebraic number theory (2009), pages 25-27.
-void _primitive_root(mpz_class &g, const mpz_class &p, const mpz_class &e, 
+void _primitive_root(mpz_class &g, const mpz_class &p, const mpz_class &e,
         bool even = false)
 {
     std::vector<RCP<const Integer>> primes;
@@ -1028,7 +1014,7 @@ bool _sqrt_mod_prime(mpz_class &rop, const mpz_class &a, const mpz_class &p)
 
 // References : Menezes, Alfred J., Paul C. Van Oorschot, and Scott A. Vanstone. Handbook of applied cryptography. CRC press, 2010. pages 104 - 108
 // Calculates log = x mod q**k where g**x == a mod p and order(g, p) = n.
-void _discrete_log(mpz_class &log, const mpz_class &a, const mpz_class &g, const mpz_class &n, 
+void _discrete_log(mpz_class &log, const mpz_class &a, const mpz_class &g, const mpz_class &n,
         const mpz_class &q, const unsigned &k, const mpz_class &p)
 {
     log = 0;
@@ -1073,7 +1059,7 @@ void _discrete_log(mpz_class &log, const mpz_class &a, const mpz_class &g, const
 
 // References : Johnston A., A generalised qth root algorithm.
 // Solution for x**n == a mod p**k where a != 0 mod p and p is an odd prime.
-bool _nthroot_mod1(std::vector<RCP<const Integer>> &roots, const mpz_class &a, const mpz_class &n, 
+bool _nthroot_mod1(std::vector<RCP<const Integer>> &roots, const mpz_class &a, const mpz_class &n,
         const mpz_class &p, const unsigned k, bool all_roots = false)
 {
     mpz_class _n, r, root, s, t, g = 0, pk, m, phi;
@@ -1192,7 +1178,7 @@ bool _nthroot_mod1(std::vector<RCP<const Integer>> &roots, const mpz_class &a, c
 }
 
 // Solution for x**n == a mod p**k.
-bool _nthroot_mod_prime_power(std::vector<RCP<const Integer>> &roots, const mpz_class &a, const mpz_class &n, 
+bool _nthroot_mod_prime_power(std::vector<RCP<const Integer>> &roots, const mpz_class &a, const mpz_class &n,
         const mpz_class &p, const unsigned k, bool all_roots = false)
 {
     mpz_class pk, root;
@@ -1351,7 +1337,7 @@ bool nthroot_mod(const Ptr<RCP<const Integer>> &root, const RCP<const Integer> &
     return true;
 }
 
-void nthroot_mod_list(std::vector<RCP<const Integer>> &roots, const RCP<const Integer> &a, 
+void nthroot_mod_list(std::vector<RCP<const Integer>> &roots, const RCP<const Integer> &a,
         const RCP<const Integer> &n, const RCP<const Integer> &mod)
 {
     if (mod->as_mpz() <= 0) {
@@ -1452,4 +1438,3 @@ void powermod_list(std::vector<RCP<const Integer>> &pows, const RCP<const Intege
 }
 
 } // SymEngine
-

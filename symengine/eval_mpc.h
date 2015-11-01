@@ -11,7 +11,7 @@
 
 #ifdef HAVE_SYMENGINE_MPC
 #include <symengine/basic.h>
-#include <mpc.h>
+#endif
 
 namespace SymEngine {
 

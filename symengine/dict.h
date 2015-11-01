@@ -8,8 +8,6 @@
 #ifndef SYMENGINE_DICT_H
 #define SYMENGINE_DICT_H
 
-#include <gmpxx.h>
-
 namespace SymEngine {
 
 class Basic;
@@ -152,4 +150,3 @@ std::ostream& operator<<(std::ostream& out, const SymEngine::vec_basic& d);
 std::ostream& operator<<(std::ostream& out, const SymEngine::set_basic& d);
 
 #endif
-

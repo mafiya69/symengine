@@ -8,17 +8,53 @@
 #define SYMENGINE_BASIC_H
 
 // Include all C++ headers here:
-#include <cstddef>
-#include <stdexcept>
-#include <iostream>
-#include <sstream>
-#include <typeinfo>
-#include <map>
-#include <vector>
-#include <set>
-#include <unordered_map>
+#include <algorithm>
 #include <cassert>
 #include <ciso646>
+#include <cstddef>
+#include <cmath>
+#include <complex>
+#include <functional>
+#include <gmpxx.h>
+#include <iostream>
+#include <iterator>
+#include <limits>
+#include <map>
+#include <set>
+#include <sstream>
+#include <stdexcept>
+#include <stdlib.h>
+#include <type_traits>
+#include <typeinfo>
+#include <unordered_map>
+#include <valarray>
+#include <vector>
+
+#ifdef HAVE_SYMENGINE_ARB
+#include <arb.h>
+#endif
+
+#ifdef HAVE_SYMENGINE_MPC
+#include <mpc.h>
+#endif
+
+#ifdef HAVE_SYMENGINE_MPFR
+#include <mpfr.h>
+#endif
+
+#ifdef HAVE_SYMENGINE_ECM
+#  include <ecm.h>
+#endif
+
+#ifdef HAVE_SYMENGINE_PRIMESIEVE
+#  include <primesieve.hpp>
+#endif
+
+#ifdef HAVE_SYMENGINE_ARB
+#  include "arb.h"
+#  include "bernoulli.h"
+#  include "rational.h"
+#endif
 
 #include <symengine/symengine_config.h>
 

@@ -1,7 +1,3 @@
-#include <cmath>
-#include <functional>
-#include <complex>
-
 #include <symengine/basic.h>
 #include <symengine/symbol.h>
 #include <symengine/add.h>
