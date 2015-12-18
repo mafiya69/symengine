@@ -313,6 +313,11 @@ void Mul::as_base_exp(const RCP<const Basic> &self, const Ptr<RCP<const Basic>> 
     }
 }
 
+RCP<const Basic> Mul::as_numer_denom() const
+{
+
+}
+
 RCP<const Basic> mul(const RCP<const Basic> &a, const RCP<const Basic> &b)
 {
     SymEngine::map_basic_basic d;

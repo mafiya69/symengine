@@ -216,6 +216,11 @@ void Add::coef_dict_add_term(const Ptr<RCP<const Number>> &coef, umap_basic_num 
     }
 }
 
+RCP<const Basic> Add::as_numer_denom() const
+{
+  
+}
+
 void Add::as_coef_term(const RCP<const Basic> &self,
         const Ptr<RCP<const Number>> &coef, const Ptr<RCP<const Basic>> &term)
 {

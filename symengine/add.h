@@ -64,6 +64,9 @@ public:
     //! Substitutes the dict
     virtual RCP<const Basic> subs(const map_basic_basic &subs_dict) const;
 
+    //! Return as a Numerator & Denominator
+    RCP<const Basic> as_numer_denom() const;
+
     virtual vec_basic get_args() const;
 
     virtual void accept(Visitor &v) const;
